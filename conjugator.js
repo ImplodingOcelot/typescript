@@ -4,24 +4,24 @@
 let root;
 let personal;
 let numPeople;
-function accessConjugators(s) {
+function accessConjugators() {
     const rootInput = document.getElementById('root');
     rootInput.addEventListener('change', () => {
         root = rootInput.value;
         console.log(root);
-        conjugateSpanish(root, personal, numPeople);
+        conjugateSpanish();
     });
     const personalInput = document.getElementById('personal');
     personalInput.addEventListener('change', () => {
         personal = personalInput.value;
         console.log(personal);
-        conjugateSpanish(root, personal, numPeople);
+        conjugateSpanish();
     });
     const numPeopleInput = document.getElementById('numPeople');
     numPeopleInput.addEventListener('change', () => {
         numPeople = numPeopleInput.value;
         console.log(numPeople);
-        conjugateSpanish(root, personal, numPeople);
+        conjugateSpanish();
     });
 }
 
@@ -37,21 +37,24 @@ function conjugateSpanish() {
     let root = rootInput.value;
     let personal = personalInput.value;
     let numPeople = numPeopleInput.value;
+    var ending = root.slice(-2);
     root = root.slice(0, -2);
     console.log(root);
-
+    if(numPeople > 2)   {
+        numPeople = 2;
+    }
     switch (ending) {
         case "ar":
             const AR_ED = Array.from([["o", "as", "a"], ["amos", "ais", "an"]]);
-            root = root.concat(AR_ED[personal][numPeople]);
+            root = root.concat(AR_ED[numPeople-1][personal-1]);
             break;
         case "er":
             const ER_ED = Array.from([["o", "as", "a"], ["amos", "ais", "an"]]);
-            root = root.concat(ER_ED[personal][numPeople]);
+            root = root.concat(ER_ED[numPeople-1][personal-1]);
             break;
         case "ir":
             const IR_ED = Array.from([["o", "as", "a"], ["amos", "ais", "an"]]);
-            root = root.concat(IR_ED[personal][numPeople]);
+            root = root.concat(IR_ED[numPeople-1][personal-1]);
             break;
         default:
             root = "Invalid";
@@ -61,3 +64,11 @@ function conjugateSpanish() {
     document.getElementById('result').innerText = root;
     return result;
 }
+function detectEmpty()  {
+    if(root == ""  || personal == "" || numPeople == "") {
+        console.log("detect empty true");
+        return true;
+    }
+    return false;
+}
+accessConjugators();
