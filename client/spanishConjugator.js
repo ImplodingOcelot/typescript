@@ -4,7 +4,7 @@
 let root;
 let personal;
 let numPeople;
-function accessConjugators() {
+function accessSpanishConjugators() {
     const rootInput = document.getElementById('root');
     rootInput.addEventListener('change', () => {
         root = rootInput.value;
@@ -71,4 +71,4 @@ function detectEmpty()  {
     }
     return false;
 }
-accessConjugators();
+accessSpanishConjugators();
