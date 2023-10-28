@@ -15,7 +15,7 @@ async function getConjVerb() {
     let output;
     if (root != "") {
         const url = '/conjugateJapaneseServer?root=' + root + '&conjOption=' + conjOption + '&verPosorNeg=' + verPosorNeg;
-        output = await (await fetch(url)).text();
+        output = await fetch(url).then((response) => response.text());
         console.log("WOWZA: " + output);
     } else {
         output = "INVALID";

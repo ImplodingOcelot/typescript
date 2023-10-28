@@ -23,10 +23,9 @@ app.get("/japaneseConjugator.js", (req, res) => {
     res.status(200).sendFile(__dirname + "/client/japaneseConjugator.js");
 })
 app.get("/conjugateJapaneseServer", (req, res) => {
-    let root = req.query.root;
-    let conjOption = req.query.conjOption;
-    let verPosorNeg = req.query.verPosorNeg;
-  
+    let root = req.query.root as string;
+    let conjOption = req.query.conjOption as string;
+    let verPosorNeg = req.query.verPosorNeg == "true";
     let conjugatedVerb = conjugateJapanese(root, conjOption, verPosorNeg);
   
     res.status(200).send(conjugatedVerb);

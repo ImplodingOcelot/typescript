@@ -1,20 +1,20 @@
 import * as hepburn from "hepburn";
 
-export function conjugateJapanese(root, conjOption, verPosorNeg)   {
+export function conjugateJapanese(root: string, conjOption: string, verPosorNeg: boolean)   {
     console.log("conjugateJapanese() called");
     let verbGroup;
-    if(hepburn.fromKana(root.slice(-2)) == "suru")    {
+    console.log("WOWOW : " + hepburn.fromKana(root));
+    if(hepburn.fromKana(root).toLowerCase().endsWith("suru") || hepburn.fromKana(root).toLowerCase().endsWith("kuru"))    {
         verbGroup = 3;
-        console.log("verb 3");
-    } else if(hepburn.fromKana(root.slice(-2)).includes("iru") || hepburn.fromKana(root.slice(-2)).includes("eru")) {
+    } else if(hepburn.fromKana(root).toLowerCase().endsWith("iru") || hepburn.fromKana(root).toLowerCase().endsWith("eru")) {
         verbGroup = 2;
-        console.log("verb 2");
     } else {
         verbGroup = 1;
-        console.log("verb 1");
     }
+    console.log("verbGroup = " + verbGroup);
     switch (conjOption) {
         case "masu":
+            if(verbGroup == 1)  {
             console.log("masu called");
             let splitRoot = hepburn.splitKana(root);
             let lastChar = splitRoot[splitRoot.length - 1];
@@ -33,9 +33,24 @@ export function conjugateJapanese(root, conjOption, verPosorNeg)   {
             ending = hepburn.toHiragana(ending.toLowerCase());
             ending += verPosorNeg ? "ます" : "ません";
             root = newRoot + ending;
-            console.log("root = " + root);
+            console.log("root = " + root + "\n");
+        } else if(verbGroup == 2) {
+            let splitRoot = hepburn.splitKana(root);
+            splitRoot.pop();
+            root = splitRoot.join("");
+            root += verPosorNeg ? "ます" : "ません";
+        } else if(verbGroup == 3) {
+            if(hepburn.fromKana(root).toLowerCase().endsWith("suru"))   {
+                root = root.slice(0, -4);
+                root += verPosorNeg ? "します" : "しません";
+            } else if(hepburn.fromKana(root).toLowerCase().endsWith("kuru")) {
+                root = root.slice(0, -4);
+                root += verPosorNeg ? "きます" : "きません";
+            }
+        }
             break;
         default:
+            root = "Error: Invalid conjugation option";
             break;
     }
     return root;
