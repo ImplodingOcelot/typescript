@@ -1,6 +1,7 @@
 let root;
 let conjOption = "masu";
 let verPosorNeg = true;
+let tense = 2;
 function accessJapaneseConjugator() {
     console.log("accessJapaneseConjugator() called");
     const rootInput = document.getElementById('root');
@@ -14,7 +15,7 @@ function accessJapaneseConjugator() {
 async function getConjVerb() {
     let output;
     if (root != "") {
-        const url = '/conjugateJapaneseServer?root=' + root + '&conjOption=' + conjOption + '&verPosorNeg=' + verPosorNeg;
+        const url = '/conjugateJapaneseServer?root=' + root + '&conjOption=' + conjOption + '&verPosorNeg=' + verPosorNeg + '&tense=' + tense;
         output = await fetch(url).then((response) => response.text());
         console.log("WOWZA: " + output);
     } else {
