@@ -1,9 +1,10 @@
 // TRANS RIGHTS
 import express from "express";
+import * as child_process from 'child_process';
 const app = express();
 let option = "masu";
 let tense = 2;
-import { conjugateJapanese } from "./server/japaneseConj/japaneseConjugatorServer.js";
+import { conjugateJapanese } from "./server/japaneseConjugatorServer.js";
 
 app.get("/", (req, res) => {
     res.status(200).sendFile(__dirname + "/client/index.html");
@@ -41,5 +42,27 @@ app.get("/changeJapaneseTense", (req, res) => {
     tense = parseInt(req.query.tense as string);
     console.log("tense = " + tense);
     res.status(200).sendFile(__dirname + "/client/japaneseConjugator.html");
+});
+app.get("/test", (req, res) => {
+    let output: string = '';
+    console.log("test");
+    const child = child_process.exec('test');
+
+    if (child.stdout) {
+        child.stdout.on('data', (data) => {
+            output += data.toString();
+        });
+    }
+    
+    if (child.stderr) {
+        child.stderr.on('data', (data) => {
+            output += data.toString();
+        });
+    }
+
+    child.on('close', (code) => {
+        console.log(`child process exited with code ${code}` + ", output = " + output);
+        res.status(200).send(output);
+    });
 });
 app.listen(8000);

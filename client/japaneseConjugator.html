@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="shortcut icon" href="#">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="index.css">
+  <link rel="shortcut icon" href="#">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
-    <p>Japanese Conjugator:<br></p>
-    <label for="root">Root:</label>
-    <input type="text" id="root" name="root"> 
-    <div class="dropdown">
-        <button class="dropbtn">Conjugator Options</button>
-        <div class="dropdown-content">
-          <a href="/changeJapaneseConjOption?option=masu">masu</a>
-          <a href="/changeJapaneseConjOption?option=nai">nai</a>
-          <a href="/changeJapaneseConjOption?option=ta">ta</a>
-        </div>
+  <p>Japanese Conjugator:<br></p>
+  <label for="root">Root:</label>
+  <input type="text" id="root" name="root">
+  <!-- sets masu/nai/ta -->
+  <div class="dropdown">
+    <button class="dropbtn">Conjugator Options</button>
+    <div class="dropdown-content">
+      <a href="/changeJapaneseConjOption?option=masu">masu</a>
+      <a href="/changeJapaneseConjOption?option=nai">nai</a>
+      <a href="/changeJapaneseConjOption?option=ta">ta</a>
     </div>
-    <div class="dropdown">
-        <button class="dropbtn">Tenses</button>
-        <div class="dropdown-content">
-          <a href="/changeJapaneseTense?tense=1">Past</a>
-          <a href="/changeJapaneseTense?tense=2">Present</a>
-          <a href="/changeJapaneseTense?tense=3">Future</a>
-        </div>
+  </div>
+  <!-- sets tense-->
+  <div class="dropdown">
+    <button class="dropbtn">Tenses</button>
+    <div class="dropdown-content">
+      <a href="/changeJapaneseTense?tense=1">Past</a>
+      <a href="/changeJapaneseTense?tense=2">Present</a>
+      <a href="/changeJapaneseTense?tense=3">Future</a>
     </div>
-    <br>
-    <div id="result">Test</div>
-    <script src="japaneseConjugator.js" type="text/javascript"></script>
+  </div>
+  <br>
+  <div id="result">Test</div>
+  <script src="japaneseConjugator.js" type="text/javascript"></script>
 </body>
+
 </html>

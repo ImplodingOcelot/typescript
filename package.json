@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsx main.ts"
+    "start": "g++ -o test test.cpp && tsx main.ts"
   },
   "author": "",
   "license": "ISC",
