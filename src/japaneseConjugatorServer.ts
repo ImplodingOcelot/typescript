@@ -1,6 +1,5 @@
 import * as hepburn from "hepburn";
 export function conjugateJapanese(root: string, conjOption: string, verPosorNeg: boolean, tense: number) {
-    // console.log("conjugateJapanese() called");
     let verbGroup;
     console.log("WOWOW : " + hepburn.fromKana(root));
     if (hepburn.fromKana(root).toLowerCase().endsWith("suru") || hepburn.fromKana(root).toLowerCase().endsWith("kuru")) {
@@ -63,7 +62,7 @@ export function conjugateJapanese(root: string, conjOption: string, verPosorNeg:
             break;
         case "nai":
             if (verbGroup == 1) {
-                if(root.endsWith('う')){
+                if (root.endsWith('う')) {
                     root = root.slice(0, -1);
                     root += "わない";
                 } else {
@@ -90,42 +89,42 @@ export function conjugateJapanese(root: string, conjOption: string, verPosorNeg:
             }
             break;
         case "ta": // both ta and nakkata
-            if(verPosorNeg) {
-            if(verbGroup == 1){
-                let lastChar = hepburn.splitKana(root)[hepburn.splitKana(root).length - 1];
-                if(root == "いく" || root == "行く")  {
-                    root= "いった";
-                } else if(lastChar == "う" || lastChar == "つ" || lastChar == "る"){
+            if (verPosorNeg) {
+                if (verbGroup == 1) {
+                    let lastChar = hepburn.splitKana(root)[hepburn.splitKana(root).length - 1];
+                    if (root == "いく" || root == "行く") {
+                        root = "いった";
+                    } else if (lastChar == "う" || lastChar == "つ" || lastChar == "る") {
+                        root = root.slice(0, -1);
+                        root += "った";
+                    } else if (lastChar == "ぶ" || lastChar == "む" || lastChar == "ぬ") {
+                        root = root.slice(0, -1);
+                        root += "んだ";
+                    } else if (lastChar == "く") {
+                        root = root.slice(0, -1);
+                        root += "いた";
+                    } else if (lastChar == "ぐ") {
+                        root = root.slice(0, -1);
+                        root += "いだ";
+                    } else if (lastChar == "す") {
+                        root = root.slice(0, -1);
+                        root += "した";
+                    }
+                } else if (verbGroup == 2) {
                     root = root.slice(0, -1);
-                    root += "った";
-                } else if(lastChar == "ぶ" || lastChar == "む" || lastChar == "ぬ"){
-                    root = root.slice(0, -1);
-                    root += "んだ";
-                } else if(lastChar == "く"){
-                    root = root.slice(0, -1);
-                    root += "いた";
-                } else if(lastChar == "ぐ") {
-                    root = root.slice(0, -1);
-                    root += "いだ";
-                } else if(lastChar == "す") {
-                    root = root.slice(0, -1);
-                    root += "した";
+                    root += "た";
+                } else if (verbGroup == 3) {
+                    if (hepburn.fromKana(root).toLowerCase().endsWith("suru")) {
+                        root = root.slice(0, -4);
+                        root += "した";
+                    } else if (hepburn.fromKana(root).toLowerCase().endsWith("kuru")) {
+                        root = root.slice(0, -4);
+                        root += "きた";
+                    }
                 }
-            } else if (verbGroup == 2) {
-                root = root.slice(0, -1);
-                root += "た";
-            } else if (verbGroup == 3) {
-                if (hepburn.fromKana(root).toLowerCase().endsWith("suru")) {
-                    root = root.slice(0, -4);
-                    root += "した";
-                } else if (hepburn.fromKana(root).toLowerCase().endsWith("kuru")) {
-                    root = root.slice(0, -4);
-                    root += "きた";
-                }
+            } else {
+                root = "code this remember later lmao";
             }
-        } else {
-            root = "code this remember later lmao";
-        }
         default:
             root = "Error: Invalid conjugation option";
             break;

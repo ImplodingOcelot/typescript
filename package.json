@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "g++ -o test test.cpp && tsx main.ts"
+    "compile": "g++ -o src/storageManager src/storageManager.cpp",
+    "start": "tsx main.ts"
   },
   "author": "",
   "license": "ISC",
