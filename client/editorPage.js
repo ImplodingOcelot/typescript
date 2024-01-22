@@ -1,3 +1,5 @@
+currentlyUpdated = false;
+let bypass = "false";
 async function save() {
     let data = document.getElementById("editor").innerText;
     let filename = document.getElementById("filename").innerText;
@@ -30,7 +32,7 @@ const socket = new WebSocket('ws://localhost:8080');
 async function sync() {
     setInterval(function () {
         load()
-    }, syncInterval*1000)
+    }, syncInterval * 1000)
 }
 
 async function load() {
@@ -41,17 +43,39 @@ async function load() {
     let data = document.getElementById("editor").innerText;
     let key = document.getElementById("key").innerText;
     key = key.trim();
+    if (currentlyUpdated == false) {
+        bypass = "true";
+        console.log("hi");
+        currentlyUpdated = true;
+    } else {
+        bypass = "false";
+    }
+    console.log("bypass: " + bypass);
     const postReq = {
         filename: filename,
         data: data,
         key: key,
+        bypass: bypass,
     }
     console.log(JSON.stringify(postReq));
     socket.send(JSON.stringify(postReq));
     socket.onmessage = function (event) {
         console.log("abc: " + JSON.parse(event.data).text);
-        if (document.getElementById("editor").innerText != JSON.parse(event.data).text) {
+        if (bypass == "true") {
             document.getElementById("editor").innerText = JSON.parse(event.data).text;
+        } else {
+            try {
+                if (JSON.parse(event.data).ifActiveUser == true) {
+                    document.getElementById("editor").contentEditable = false;
+                }
+                if (document.getElementById("editor").innerText != JSON.parse(event.data).text && JSON.parse(event.data).ifActiveUser == true && syncCurrent == true) {
+                    document.getElementById("editor").innerText = JSON.parse(event.data).text;
+                } else if (JSON.parse(event.data).ifActiveUser == false) {
+                    document.getElementById("editor").contentEditable = false;
+                }
+            } catch (e) {
+                console.log(e);
+            }
         }
     }
 }
@@ -75,5 +99,9 @@ function main() {
     button3.addEventListener('click', e => {
         sync();
     });
+    let insert = document.getElementById("filename");
+    insert.addEventListener('input', e => {
+        currentlyUpdated = false;
+    })
 }
 main();

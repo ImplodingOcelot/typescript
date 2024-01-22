@@ -101,26 +101,45 @@ wss.on('connection', (ws, req) => {
             let filename = JSON.parse(message.toString()).filename;
             let data = JSON.parse(message.toString()).data;
             let key = JSON.parse(message.toString()).key;
+            let bypass = JSON.parse(message.toString()).bypass;
             let userid = req.socket.remoteAddress + req.socket.remotePort;
-            if (activeUsers[filename] != userid && !activeUsersOnCooldown.includes(userid)) {
-                let lastUser = activeUsers[filename];
-                // add userid to activeUsersOnCooldown
-                activeUsersOnCooldown.push(lastUser);
-                removeElementAfterCooldown(activeUsersOnCooldown, lastUser, 4);
-                activeUsers[filename] = userid;
-                console.log("User " + userid + " is now active on file " + filename);
-                console.log(activeUsers);
-            } else {
-                console.log("User ") + userid + " failed to gain active user status on file " + filename;
-            }
-            if (activeUsers[filename] == userid) {
-                if (key == fs.readFileSync(__dirname + "/key.txt", "utf8")) {
-                    fs.writeFileSync(__dirname + "/src/storage/" + filename, data);
-                    console.log("Saved E");
+            if (bypass == "true") {
+                console.log("USER " + userid + " bypassed!!!");
+                let text = fs.readFileSync(__dirname + "/src/storage/" + filename, "utf8");
+                console.log("AAAA: " + text);
+                const data = {
+                    text: text,
+                    ifActiveUser: true,
                 }
+                ws.send(JSON.stringify(data));
+            } else {
+                if (activeUsers[filename] != userid && !activeUsersOnCooldown.includes(userid)) {
+                    let lastUser = activeUsers[filename];
+                    // add userid to activeUsersOnCooldown
+                    activeUsersOnCooldown.push(lastUser);
+                    removeElementAfterCooldown(activeUsersOnCooldown, lastUser, 4);
+                    activeUsers[filename] = userid;
+                    //console.log("User " + userid + " is now active on file " + filename);
+                    // console.log(activeUsers);
+                } else {
+                    //console.log("User ") + userid + " failed to gain active user status on file " + filename;
+                }
+                if (activeUsers[filename] == userid) {
+                    if (key == fs.readFileSync(__dirname + "/key.txt", "utf8")) {
+                        fs.writeFileSync(__dirname + "/src/storage/" + filename, data);
+                        console.log("Saved E");
+                    }
+                }
+                text = fs.readFileSync(__dirname + "/src/storage/" + filename, "utf8");
+                let ifActiveUser: boolean;
+                if (userid == activeUsers[filename]) ifActiveUser = true;
+                else ifActiveUser = false;
+                let dataToSend = {
+                    text: text,
+                    ifActiveUser: ifActiveUser,
+                }
+                ws.send(JSON.stringify({ data: dataToSend }));
             }
-            text = fs.readFileSync(__dirname + "/src/storage/" + filename, "utf8");
-            ws.send(JSON.stringify({ text: text }));
         } catch (error) {
             console.log(error);
             ws.send("Error: " + error);
